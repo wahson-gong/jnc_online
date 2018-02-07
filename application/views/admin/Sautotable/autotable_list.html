@@ -3,6 +3,7 @@
 
 <head>
 	<?php include CUR_VIEW_PATH."public/head.html"?>
+	<script src="<?php echo $this->templates_path?>/layer/layer.js"></script>
 </head>
 
 <body class="body-color">
@@ -108,7 +109,8 @@
            
 		<td>
 			<?php if($v['model_id']==130){ ?>
-			<a href="index.php?p=show&c=index&a=mingdan&id=<?=$brand['id']?>">载入</a>|
+			<!--<a id="zairu" name="<?=$brand['id']?>"  href="index.php?p=show&c=index&a=mingdan&id=<?=$brand['id']?>">载入</a>|-->
+			<a id="zairu" name="<?=$brand['id']?>" href="javascript:;">载入</a>|
 			<a href="index.php?p=admin&c=autotable&a=edit&model_id=<?php echo $_GET['model_id']?>&id=<?php echo $brand['id'];?>">修改</a> |
 			<a onclick="return confirm('你确认将该信息删除到回收站?   注意：相关图片和资源也将一起删除到回收站');" href="index.php?p=admin&c=autotable&a=delete&model_id=<?php echo $_GET['model_id']?>&id=<?php echo $brand['id'];?>">删除</a>
 			<?php }else{ ; ?>
@@ -166,6 +168,34 @@
 	if(!(/msie [6|7|8|9]/i.test(navigator.userAgent))) {
 		new WOW().init();
 	};
+
+	$('#zairu').click(function () {
+	    var id=this.name;
+//	    $.get('index.php?p=show&c=admin&a=sfzu',{id:id},function (msg) {
+//			if(msg=='1'){
+//                layer.msg('请勿重复载入');return false;
+//			}
+//        })
+
+        $.ajax({
+            url : 'index.php?p=show&c=admin&a=sfzu',
+            data : {id:id},
+            dataType : "json",
+            type : "GET",
+//            async:false,
+            beforeSend:function () {
+//                index = layer.load(0, {shade: false});
+            },
+            success:function (msg) {
+               if (msg=='1'){
+                   layer.msg('请勿重复载入');return false;
+			   }else {
+                   window.location.href = 'index.php?p=show&c=index&a=mingdan&id='+id+'';
+			   }
+            }
+        });
+
+    })
 </script>
 </body>
 

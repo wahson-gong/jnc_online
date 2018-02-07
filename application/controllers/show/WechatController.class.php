@@ -35,6 +35,20 @@ class WechatController extends BaseController
         $token = file_get_contents($url);
         $json = json_decode($token);
         $_SESSION['openid'] = $json->openid;
+        return $this->jump("http://jnc.cdsile.cn/?c=login&a=index",'',0);
+    }
+    //授权成功回调
+    public function infoBackAction(){
+        $appID = "wx54dad1a359d51c95";
+        $secret = "c6000d22a71be19e0caa9b3877fed7e1";
+        //获取code
+        $code = $_GET['code'];
+        //通过code换取网页授权access_token
+        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$appID}&secret={$secret}&code={$code}&grant_type=authorization_code";
+        //获取openID
+        $token = file_get_contents($url);
+        $json = json_decode($token);
+        $_SESSION['openid'] = $json->openid;
         return $this->jump("?c=base&a=openId",'',0);
     }
 }

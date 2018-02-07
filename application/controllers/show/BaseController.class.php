@@ -48,7 +48,7 @@ class BaseController extends Controller {
         if (!isset($_SESSION['openid'])) {
             $appID = "wx54dad1a359d51c95";
             //绝对路径
-            $callback_url = "http://jnc.cdsile.cn/?c=wechat&a=callback";
+            $callback_url = "http://jnc.cdsile.cn/?c=wechat&a=infoBack";
             $callback_url = urlencode($callback_url);
             //用户授权,获取code
             $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appID}&redirect_uri={$callback_url}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";

@@ -66,7 +66,7 @@ class IndexController extends   BaseController
 
 
     public function upload2Action(){
-        
+
     }
 
     //我的奖品
@@ -207,7 +207,7 @@ class IndexController extends   BaseController
     public function daojishiAction(){
         $model=new ModelNew();
         $wdjp=$model->M('kjsp');
-        $result=$wdjp->findBySql("select qihao from sl_kjsp GROUP  BY  qihao ");
+        $result=$wdjp->findBySql("select qihao from sl_kjsp WHERE zhuangtai='点播' GROUP  BY  qihao ");
         $_data_prize = [];
         foreach ($result  as $k => $v)
         {
@@ -352,7 +352,7 @@ class IndexController extends   BaseController
         $_czrz1=new ModelNew('czrz');
         $_czrz['caozuorenyuan']=$_SESSION['admin']['username'];
         $_czrz['caozuoleixing']="excel表操作";
-        $_czrz['caozuoshijian']=time()+3600*8;
+        $_czrz['caozuoshijian']=date('Y-m-d h:i:s ',time()+3600*8);
         $_czrz1->insert($_czrz);
 //        $rs=IndexController::sjtsAction($lybh,$shuju['kaijiangquyu']);
         $rs=IndexController::sjtsAction($lybh,$_cf_data_dh,$_cf_data_tel);

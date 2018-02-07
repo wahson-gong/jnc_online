@@ -167,5 +167,33 @@ class AdminController extends BaseController
         die;
      }
 
+     //测试方法
+    public function textAction(){
+            $qihao="2018年第一期";
+            $_quyu=new ModelNew('daorujilu');
+            $quyu=$_quyu->findBySql("select kaijiangquyu from sl_daorujilu WHERE kaijiangqihao='".$qihao."'")[0]['kaijiangquyu'];
+            echo $quyu;
+    }
+
+    //所有获得活动详情的集中静态方法
+
+    public static  function actAction(){
+        $model=new ModelNew('qh');
+        $result=$model->where(['zhuangtai'=>1])->find('huodongguize')->one()['huodongguize'];
+        return html_entity_decode($result);
+    }
+
+    //判断是否载入的方法(共有)
+    public function sfzuAction(){
+        $id=$_GET['id'];
+        $model=new ModelNew('daorujilu');
+        $rs=$model->where(['id'=>$id])->find('zairuzhuangtai')->one()['zairuzhuangtai'];
+        if ($rs=='已载入'){
+            echo '1';
+        }else{
+            echo '12';
+        }
+    }
+
     
 }

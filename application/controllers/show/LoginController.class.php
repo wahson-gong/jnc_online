@@ -19,8 +19,16 @@ class LoginController extends   BaseController
     public function indexAction()
     {        //初始化返回参数
         //==================微信openID=======================
-
-        $openid = $this->openIdAction();
+        if (!isset($_SESSION['openid'])) {
+            $appID = "wx54dad1a359d51c95";
+            //绝对路径
+            $callback_url = "http://jnc.cdsile.cn/?c=wechat&a=callback";
+            $callback_url = urlencode($callback_url);
+            //用户授权,获取code
+            $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appID}&redirect_uri={$callback_url}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
+            return $this->jump($url,'',0);
+        }
+        $openid = $_SESSION['openid'];
         $member = new ModelNew();
         $row = $member->M('user')->where(['openid_wx' => $openid])->one();
         if ($row) {
@@ -35,6 +43,7 @@ class LoginController extends   BaseController
 
     public function loginAction()
     {
+        $openid = $_SESSION['openid'];
         //前端正则验证非空和验证码非空以及协议阅读
         //1代表电话格式错误 2代表验证码错误 3代表成功 4代表用户已经存在 5.名单不存在此用户
         $request = $_SERVER['REQUEST_METHOD'];
@@ -123,12 +132,14 @@ class LoginController extends   BaseController
                     $_qh=new ModelNew('qh');
 
     //                @$result=$_qh->findBySql("select *from sl_qihao WHERE shi LIKE '%".$shi."%'")[0];
-                    $quyu=$_qh->findBySql("select *from sl_qh WHERE zhuangtai=1")[0]['kaijiangquyu'];
-                    $qihao=$_qh->findBySql("select *from sl_qh WHERE zhuangtai=1")[0]['qihao'];
+//                    $quyu=$_qh->findBySql("select *from sl_qh WHERE zhuangtai=1")[0]['kaijiangquyu'];
+                    $qihao=$_qh->findBySql("select qihao from sl_qh WHERE zhuangtai=1")[0]['qihao'];
+                    $_quyu=new ModelNew('daorujilu');
+                    $quyu=$_quyu->findBySql("select kaijiangquyu from sl_daorujilu WHERE kaijiangqihao='".$qihao."'")[0]['kaijiangquyu'];
 
     //                if ($result){
 
-    //                     $sl_num=$sl->findBySql('select count(*) from sl_jqsl WHERE   diqu="'.$shi.'"')[0]['count(*)'];
+    //              $sl_num=$sl->findBySql('select count(*) from sl_jqsl WHERE   diqu="'.$shi.'"')[0]['count(*)'];
                     @$sl_num=$sl->findBySql('select count(*) from sl_jqsl WHERE   diqu="'.$quyu.'"')[0]['count(*)'];
 
 
@@ -321,6 +332,14 @@ class LoginController extends   BaseController
 //                }
                 $data_wdyh['jiangquanhaoma'] = $str;
                 $data_wdyh['qihao'] = $qihao;
+
+                $_model_zpgl=new ModelNew('zpgl');
+                $rs=empty($_model_zpgl->findBySql("select suoluetu from sl_zpgl WHERE yanhuidanhao={$data_wdyh['yanhuidanhao']}")[0])?'':$_model_zpgl->findBySql("select suoluetu from sl_zpgl WHERE yanhuidanhao={$data_wdyh['yanhuidanhao']}")[0];
+                 if ($rs){
+                     $data_wdyh['touxiang']=$rs['suoluetu'];
+                 }
+
+
                 $wdyh->insert($data_wdyh);
 //                    $STR .= $str;
 //                    $NUM += $data_s2;

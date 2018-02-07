@@ -116,7 +116,7 @@ class PrizeController extends BaseController
         $rows = $prizeModel->findBySql("select paixu,jiangpin,id,percent,num,times from sl_listjp WHERE laiyuanbianhao = {$flag}");
         $arr = [];
         foreach ($rows as $k=>$val){
-            $arr[$val['id']]= $val['percent']*100;
+            $arr[$val['id']] = $val['percent']*100;
         }
         $total = array_sum($arr);
         if ($total==0){
@@ -161,10 +161,6 @@ class PrizeController extends BaseController
         $model->start_T();
         try{
 
-            if ($num <= 0 || $times<=0){
-                throw new Exception("没有中奖，再接再厉");
-            }
-
             //扣减奖品数量和开奖次数
             if ($num>=1 && $times>=1){
                 $list['num'] = $num-1;
@@ -178,7 +174,7 @@ class PrizeController extends BaseController
             }
 
             //生成中奖记录，未中奖不生成记录
-            if ($prize!="谢谢参与"){
+            if ($prize!="谢谢参与"&&$times>=1&&$num>=1){
                 $insert = new ModelNew();
                 $res = $insert->M('zjmd')->insert(['tel'=>$tel,'prize'=>$prize,'username'=>$username,'lingjiangzhuangtai'=>"未领奖",'yanhuidanhao'=>$score['yanhuidanhao'],'yanhuishijian'=>$score['yanhuishijian']]);
                 if (!$res){
@@ -200,6 +196,9 @@ class PrizeController extends BaseController
                 $data['status'] = true;
                 $data['no'] = $no;
                 $data['msg'] = $prize;
+                if ($num<=0 || $times<=0){
+                    $data['msg'] = "谢谢参与";
+                }
                 $data['times'] = floor($score['jifen']/5)-1;
                 $data['prize'] = [
                     'tel'=>$tel,
@@ -469,7 +468,7 @@ class PrizeController extends BaseController
         $data['status'] = false;
         $data['msg'] = "加载失败";
         $model = new ModelNew();
-        $list = $model->M('qh')->orderBy('dtime DESC')->one();
+        $list = $model->M('qh')->where(['zhuangtai'=>1])->orderBy('dtime DESC')->one();
         if ($list){
             $data['status'] = true;
             $data['msg'] = html_entity_decode($list['huodongguize']);
