@@ -35,7 +35,11 @@ class AutotableController extends BaseController{
 	        $filedListU6=$filedModel->select("select * from sl_filed where model_id='{$model_id}' and u6='是' ");//模糊查询字段
 	        if(count($filedListU6)>0)
 	        {
-	            $where=$where." and ";
+	            if($where!="")
+	            {
+	                $where=$where." and ";
+	            }
+	            
 	            foreach ($filedListU6 as $v)
 	            {
 	                $where=$where."  {$v['u1']} like '%{$u6}%' or ";
@@ -44,13 +48,14 @@ class AutotableController extends BaseController{
 	        }
 	    
 	    }
+	    //echo $where;die;
 	    //需要显示的字段
 	    $filedLists=$filedModel->select("select * from sl_filed where model_id='{$model_id}' and u5='是' order by u10 asc ");//显示查询字段
-	   
 	    // 载入分页类
 	    include LIB_PATH . "Page.class.php";
 	    // 获取autotable总的记录数
 	    $total = $tableModel->total($where);
+	   
 	    // 指定分页数，每一页显示的记录数
 	    $pagesize = 10;
 	    // $pagesize = $GLOBALS['config']['pagesize'];

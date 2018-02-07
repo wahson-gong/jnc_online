@@ -152,15 +152,19 @@ class AdminController extends BaseController
             }
         }
         foreach ($_data as $v){
-                  $rs=$model->findBySql("select *from sl_yhmd WHERE yanhuidanhao=$v");
+                  $rs=empty($model->findBySql("select *from sl_yhmd WHERE yanhuidanhao=$v")[0])?'':$model->findBySql("select *from sl_yhmd WHERE yanhuidanhao=$v")[0];
                   if ($rs){
                         $_zp_data['laiyuanbianhao']=$rs['laiyuanbianhao'];
                         $_zp_data['qihao']=$rs['qihao'];
                         $_zp_data['quyu']=$rs['quyu'];
                         $_zp_data['shoujihao']=$rs['kehudianhua'];
-                        $_zp_data['shangchuanleixing']='管理员上传';
+                        $_zp_data['sclx']='管理员上传';
+                        $_zp_data['yanhuidanhao']=$rs['yanhuidanhao'];
+                        $_zp_data['suoluetu']="http://jnc.cdsile.cn/public/webuploader/upload/2018-1/".$v.".jpg";
+                        $_model->insert($_zp_data);
                   }
         }
+        die;
      }
 
     

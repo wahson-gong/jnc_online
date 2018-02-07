@@ -23,14 +23,8 @@
         <!-- 轮播图 -->
         <div class="swiper-container lunbo_1">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <img src="<?php echo $this->templates_path?>/images/jz_02.jpg" alt="">
-                </div>
-                <div class="swiper-slide">
-                    <img src="<?php echo $this->templates_path?>/images/jz_02.jpg" alt="">
-                </div>
-                <div class="swiper-slide">
-                    <img src="<?php echo $this->templates_path?>/images/jz_02.jpg" alt="">
+                <div class="swiper-slide" v-for="li in list_banner" v-cloak>
+                    <img :src="li.picture" alt="">
                 </div>
             </div>
             <div class="swiper-pagination"></div>
@@ -87,20 +81,21 @@
 </body>
 <script src="<?php echo $this->templates_path?>/js/jquery.kxbdmarquee.js"></script>
 <script>
-    $(function () {
+    function clock(){
         var mySwiper = new Swiper('.lunbo_1', {
             autoplay: 3000, //可选选项，自动滑动
             pagination: '.swiper-pagination',
             loop: true,
         })
-    })
+    }
     //中奖列表
     var app = new Vue({
         el: '#app',
         data: {
             list_rows: [],
             list_issue: [],
-            list_area: []
+            list_area: [],
+            list_banner: []
         },
         methods:{
             uchange:function(item){
@@ -117,6 +112,7 @@
         get_lists();
         get_issue();
         get_area();
+        get_banner();
     };
     //搜索
     $("#date").change(function () {
@@ -126,6 +122,17 @@
     $("#area").change(function () {
         get_lists();
     });
+
+    function get_banner() {
+        $.getJSON("?c=prize&a=ban",function (data) {
+            if (data.status){
+                extend(app.list_banner,data.msg);
+                app.$nextTick(function(){
+                    clock();
+                });
+            }
+        })
+    }
     function get_lists() {
         var date = $("#date  option:selected").val();
         var area = $("#area  option:selected").val();

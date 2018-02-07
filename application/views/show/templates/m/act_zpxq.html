@@ -88,6 +88,9 @@
         }
         $("#zan").click(function () {
             $.getJSON("?c=prize&a=like&id="+id,function (data) {
+                if(!data){
+                    layer.msg("请先关注公众号");
+                }
                 if (data.status){
                     $('#like').text(data.msg);
                 }else {

@@ -32,14 +32,8 @@
         <!-- 轮播图 -->
         <div class="swiper-container lunbo_1">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <img src="<?php echo $this->templates_path?>/images/jz_02.jpg" alt="">
-                </div>
-                <div class="swiper-slide">
-                    <img src="<?php echo $this->templates_path?>/images/jz_02.jpg" alt="">
-                </div>
-                <div class="swiper-slide">
-                    <img src="<?php echo $this->templates_path?>/images/jz_02.jpg" alt="">
+                <div class="swiper-slide" v-for="li in list_banner" v-cloak>
+                    <img :src="li.picture" alt="">
                 </div>
             </div>
             <div class="swiper-pagination"></div>
@@ -157,13 +151,7 @@
 
 
 
-  /*  $(function () {
-        var mySwiper = new Swiper('.lunbo_1', {
-            autoplay: 3000, //可选选项，自动滑动
-            pagination: '.swiper-pagination',
-            loop: true,
-        })
-    });
+  /*
     var player = new Aliplayer({
         id: 'J_prismPlayer',
         width: '100%',
@@ -190,11 +178,19 @@
             console.log('播放器创建好了。')
         });*/
 
+   function clock(){
+        var mySwiper = new Swiper('.lunbo_1', {
+            autoplay: 3000, //可选选项，自动滑动
+            pagination: '.swiper-pagination',
+            loop: true,
+        })
+    }
     var app = new Vue({
         el: '#app',
         data: {
             list_one: [],
             list_two: [],
+            list_banner: []
         },
         methods:{
             uchange:function(item){
@@ -209,9 +205,19 @@
     $(function () {
         get_lists();
         get_rule();
+        get_banner();
     });
 
-
+      function get_banner() {
+          $.getJSON("?c=prize&a=ban",function (data) {
+              if (data.status){
+                  extend(app.list_banner,data.msg);
+                  app.$nextTick(function(){
+                      clock();
+                  });
+              }
+          })
+      }
 
     function get_lists() {
         $.get("?c=prize&a=double",function (data) {

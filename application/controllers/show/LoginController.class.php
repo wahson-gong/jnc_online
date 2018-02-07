@@ -19,6 +19,7 @@ class LoginController extends   BaseController
     public function indexAction()
     {        //初始化返回参数
         //==================微信openID=======================
+
         $openid = $this->openIdAction();
         $member = new ModelNew();
         $row = $member->M('user')->where(['openid_wx' => $openid])->one();
@@ -34,7 +35,6 @@ class LoginController extends   BaseController
 
     public function loginAction()
     {
-        $openid = $_SESSION['openid'];
         //前端正则验证非空和验证码非空以及协议阅读
         //1代表电话格式错误 2代表验证码错误 3代表成功 4代表用户已经存在 5.名单不存在此用户
         $request = $_SERVER['REQUEST_METHOD'];

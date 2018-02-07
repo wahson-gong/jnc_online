@@ -317,17 +317,17 @@ class PrizeController extends BaseController
     public function likeAction(){
         $data['status'] = false;
         $data['msg'] = "您已经点过赞了";
-        $tel = $this->openIdAction();
+        $openid = $this->openIdAction();
         $id = $_GET['id'];
         $model = new ModelNew();
         $row = $model->findBySql("select mingdan,dianzan from sl_wdyh WHERE id = {$id}");
         $arr = explode(',',$row[0]['mingdan']);
         foreach ($arr as $v){
-            if ($v==$tel){
+            if ($v==$openid){
                 $this->ajaxReturn($data);
             }
         }
-        $list = $row[0]['mingdan'].",$tel";
+        $list = $row[0]['mingdan'].",$openid";
         $re = $model->query("update sl_wdyh set dianzan=dianzan+1,mingdan='{$list}' WHERE id = {$id}");
         if ($re){
             $data['status'] = true;
@@ -448,6 +448,19 @@ class PrizeController extends BaseController
         }
 
 
+        $this->ajaxReturn($data);
+    }
+
+    //轮播图
+    public function banAction(){
+        $data['status'] = false;
+        $data['msg'] = "加载失败";
+        $model = new ModelNew();
+        $lists = $model->M('banner')->limit(0,3)->where(['status'=>'极致之旅'])->orderBy('paixu ASC')->all();
+        if ($lists){
+            $data['status'] = true;
+            $data['msg'] = $lists;
+        }
         $this->ajaxReturn($data);
     }
 

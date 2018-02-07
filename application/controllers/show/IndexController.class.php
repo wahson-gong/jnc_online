@@ -15,6 +15,7 @@ class IndexController extends   BaseController
         $data['touxiang']=$filename;
         $wdyh=$model->M('wdyh');
         $wdyh->where(['yonghuming'=>$_SESSION['tel']])->update($data);
+        return $data['touxiang'];
     }
 
     public function textAction(){
@@ -55,6 +56,17 @@ class IndexController extends   BaseController
         $data['touxiang']=$url;
         $wdyh=$model->M('wdyh');
         $wdyh->where(['id'=>$id])->update($data);
+
+        $danhao=$wdyh->findBySql("select yanhuidanhao from sl_wdyh WHERE id=$id")[0]['yanhuidanhao'];
+        $_model=new ModelNew('zpgl');
+        $_data['suoluetu']=$url;
+        $_data['sclx']="用户上传";
+        $_model->where(['yanhuidanhao'=>$danhao])->update($_data);
+    }
+
+
+    public function upload2Action(){
+        
     }
 
     //我的奖品
