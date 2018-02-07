@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height, user-scalable=no,initial-scale=1, minimum-scale=1, maximum-scale=1 ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的宴会</title>
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/style.css">
+    <script src="<?php echo $this->templates_path?>/js/jquery-1.11.0.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/swiper-3.4.2.jquery.min.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/tower.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/vue.min.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/utility.js"></script>
+</head>
+
+<body style="background:#ffd092;">
+<div id="app">
+    <section style='padding:1rem .25rem 1.2rem .25rem;'>
+        <!-- 无奖品 -->
+        <div class="Wujiangping" style="display:none">
+            <img src="<?php echo $this->templates_path?>/images/wuj_03.png" alt="">
+        </div>
+        <!-- 无奖品 end -->
+
+        <!-- 奖品list -->
+        <div class="Jiangp_list">
+            <div class="head_ clearfix">
+                <span class='active'>极致之旅</span>
+                <span>大转盘</span>
+            </div>
+
+            <div class="Tab_jp ">
+                <div class="Jp_ys" v-for="li in list_zidj">
+                    <h1>
+                        宴会单号：{{li.yanhuidanhao}}
+                        <span class="fr">宴会时间：01-02-19</span>
+                    </h1>
+                    <div  class="t1">
+                        奖项名称：{{li.jiangpinmingcheng}}
+                        <br> 开奖时间：{{li.kaijiangshijian}}
+                        <br> 获奖期数：{{li.huojiangqishu}}
+                        <br> 中奖号码：{{li.zhongjianghaoma}}
+                        <br>
+
+                        <a :href="'/?c=single&m=lq_zjdj&id='+li.id" class='yes' v-if="li.zhuangtai==2">去领取</a>
+                        <a href="javascript:;" class='no' v-if="li.zhuangtai==1" >已领取</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="Tab_jp none"    >
+
+                <div class="Dazp_list" v-for="li in list_prize">
+                    <h1>
+                        宴会单号： {{li.yanhuidanhao}}  <br>
+                        宴会时间：{{li.yanhuishijian}}
+
+                        <a   class="yes "  @click="click(li.yanhuidanhao)"  v-if="li.lingjiangzhuangtai=='未领奖'" > 去领取 </a>
+                        <a   class="no "  href="javascript:;"  v-if="li.lingjiangzhuangtai=='已领奖'" >已领取 </a>
+                        <!--<a   class="yes "  @click="click(li.yanhuidanhao)"  v-if="li.lingjiangzhuangtai==='已领奖'" > 去领取 </a>-->
+                    </h1>
+                    <ul >
+                        <li v-for="li1 in li.jiangxiang">
+                            奖项名称: {{li1.prize}} <span>获奖时间: {{li1.dtime}}</span>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <?php include CUR_VIEW_PATH."templates".DS."m".DS."footer.html";?>
+
+
+    <!-- 遮罩 -->
+    <div class="zhezhao"></div>
+    <!-- 大转盘 领奖判断 -->
+    <div class="Tanc_" id="1Q">
+        <img src="<?php echo $this->templates_path?>/images/close_03.png" class="Ta_close" alt="">
+        <div class="Tanc_p">
+            你还有 <em id="num">2</em> 次大转盘抽奖机会 <br>
+            <label >需要全部使用完才能领取奖品</label>
+        </div>
+        <a  class="Tanc_a" href="/?c=single&m=act_dzp"> 立即抽奖</a>
+    </div>
+</div>
+<aside>
+    <div class="T_aside">
+        <a href="/?c=single&m=act_dzp">
+            <img src="<?php echo $this->templates_path?>/images/wode.png" alt="">
+            <span>抽奖</span>
+        </a>
+        <a href="/?c=single&m=index_kfzx">
+            <img src="<?php echo $this->templates_path?>/images/kefu.png" alt=""><span>客服</span>
+        </a>
+    </div>
+</aside>
+</body>
+
+
+
+<script>
+
+
+    //中奖列表
+    var app = new Vue({
+        el: '#app',
+        data: {
+            list_prize: [],
+            list_zidj: [],
+        }
+    });
+
+
+
+    function get_list()
+    {
+        $.getJSON("/index.php?p=show&c=index&a=wdjp",{},function (result) {
+            var _data = result.msg;
+            if(!result.status){
+//                alert(result.msg);
+            }else {
+                extend(app.list_prize, _data);
+            }
+        });
+    }
+
+
+    window.onload = function(){
+
+        get_list();
+        get_zjdj();
+//
+//    $(".qulingqu").click(function () {
+//        lingqu_detail(this);
+//    });
+//
+//    function lingqu_detail(obj) {
+//        var  name = $(obj).data("name");
+//        alert(name);
+//    }
+
+    };
+
+    function get_zjdj()
+    {
+        $.getJSON("/index.php?p=show&c=index&a=zjdj",{},function (result) {
+            var _data = result.msg;
+            if(!result.status){
+//            alert(result.msg);
+            }else {
+                extend(app.list_zidj, _data);
+            }
+        });
+    }
+
+
+    var click=function(name){
+
+        $.getJSON('index.php?p=show&c=index&a=check',function (msg) {
+            if (msg=='0'){
+                window.location.href = "/?c=single&m=lq_zpjl&danhao="+name+"";
+            }else {
+                $('#num').text(msg)
+                $(".zhezhao").show();
+                $(".Tanc_").show();
+            }
+        })
+
+    };
+
+
+
+</script>
+
+
+</html>

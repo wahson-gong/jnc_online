@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height, user-scalable=no,initial-scale=1, minimum-scale=1, maximum-scale=1 ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>大转盘</title>
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/style.css">
+    <script src="<?php echo $this->templates_path?>/js/jquery-1.11.0.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/swiper-3.4.2.jquery.min.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/tower.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/vue.min.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/jquery.rotate.min.js"></script>
+    <!-- lazyload -->
+    <script src="<?php echo $this->templates_path?>/js/vue-lazyload.js"></script>
+    <!-- lazyload -->
+    <script src="<?php echo $this->templates_path?>/js/utility.js"></script>
+    <script type="text/javascript" src="<?php echo $this->templates_path?>/layer/layer.js"></script>
+</head>
+
+<body style="background:#ffd092;">
+
+    <section style="padding-bottom:1.05rem;">
+        <!-- 轮播图 -->
+        <div class="swiper-container lunbo_1">
+            <div class="swiper-wrapper">
+                <div  v-for="li in list_banner" class="swiper-slide">
+                    <img   alt=""  :src="li.picture"     >
+                    <!--<img   alt=""  src=""  v-lazy="li.picture"  >-->
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+        <!-- 转盘 抽奖 -->
+        <div class="Zhuanpan">
+            <div class="Zhuanpan_wai">
+                <div class="t1"  >
+                    <div class="Jiangp"  v-for="li in list_prizes">
+                        <span> {{li.jiangpin}} </span>
+                        <img :src="li.picture" alt="">
+                    </div>
+                </div>
+                <!-- 按钮 -->
+                <div class="Anniu">
+                    <div class="zhen"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 转盘 抽奖 end -->
+
+        <!-- 登陆 未登录 -->
+        <div class="Login_or">
+            <a id="outer" href="?c=single&m=index_login" class="anniu_style_t1">上传照片，参与抽奖</a>
+            <p id="inner" style="margin: 0 auto">你还有 <span id="times">0</span>  次抽奖机会</p>
+        </div>
+
+        <!-- 获奖 list -->
+        <div class="Huojiang Tong_pad">
+            <div class="Hj_head clearfix">
+                <span class="t1">电话</span>
+                <span class="t2">获得奖品</span>
+                <span class="t3">获奖时间</span>
+            </div>
+            <div id="Hj_body">
+                <ul class="Hj_body">
+                    <li  v-for="li in list_prize"  v-cloak>
+                        <span class="t1">
+                              {{ li.tel }}
+                        </span>
+                        <span class="t2">
+                             {{li.prize}}
+                        </span>
+                        <span class="t3">
+                             {{li.dtime}}
+                        </span>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <!-- 获奖 list end -->
+        <!-- 活动详情 -->
+        <div class=" Tong_pad">
+            <div class="Huodxq">
+                <div class="t2">活动详情</div>
+                <p class="t1" id="rule">
+                    1.固定时间开奖：每周二固定时间在剑南春官方微信开奖，根据上一周的实际宴会场次和中奖概率投放名额（方便淡旺季的控制）。
+                    <br> 2.上传宴会照片：每场宴会本身会上传视频和照片，消费者在宴会系统中上传宴会现场照片（以宴会为背景，业务员+次奥飞着+酒的合影），抽奖照片按顺序编号。其目的为体现抽奖者身份的真实性，非我公司安排的卧底。按宴席桌数决定消费者上传照片的数量，体现了抽奖次数，如当场宴会有30桌，则消费者可上传6张照片用于抽奖。
+                </p>
+            </div>
+        </div>
+        <!-- 活动详情 end -->
+    </section>
+    <?php include CUR_VIEW_PATH."templates/m/act_index.html";?>
+
+    <!-- 遮罩 -->
+    <div class="zhezhao"></div>
+    <!-- 中奖  弹出 -->
+    <div class="zhongjiang Tancys">
+        <img src="<?php echo $this->templates_path?>/images/Gunax_03.png" class="guanx" alt="" style="z-index: 1000">
+        <img src="<?php echo $this->templates_path?>/images/zhongjian_03.png" class="t1" alt="">
+        <p>
+            恭喜您 <br>
+            获得了 <span id="prize"></span> ！
+        </p>
+        
+        <span class='t2'> 再来一次 </span>
+        <span class='t5'> 谢谢，知道了！ </span>
+    </div>
+    <!-- 未中奖弹出 -->
+    <div class="Yihan Tancys">
+        <img src="<?php echo $this->templates_path?>/images/Gunax_03.png" class="guanx" alt="" style="z-index: 1000">
+        <img src="<?php echo $this->templates_path?>/images/yihan_03.png" class="t3" alt="">
+        <p>
+            抱歉！您未中奖
+        </p>
+        <img src="<?php echo $this->templates_path?>/images/ren_03.jpg" class="t4" alt="">
+        <span class='t2'> 继续努力 </span>
+        <span class='t5'> 谢谢，知道了！ </span>
+    </div>
+    <input type="hidden" id="start" value="0">
+</body>
+<script src="<?php echo $this->templates_path?>/js/jquery.kxbdmarquee.js"></script>
+<script>
+    function clock()
+    {
+        var mySwiper = new Swiper('.lunbo_1', {
+            autoplay: 3000, //可选选项，自动滑动
+            pagination: '.swiper-pagination',
+            loop: true,
+        });
+    }
+    function roll(){
+        $("#Hj_body").kxbdMarquee({
+            direction: "up",
+            isEqual: false,
+            scrollDelay: '50',
+        });
+    }
+    //中奖列表
+    var app = new Vue({
+        el: '.Hj_body',
+        data: {
+            list_prize: [],
+        }
+    });
+
+    //lazyload
+//    Vue.use(VueLazyload, {
+//		preLoad: 1.3,
+//		error: '<?php echo $this->templates_path?>/images/wutu.jpg',
+//		loading: '<?php echo $this->templates_path?>/images/1.jpg',
+//		attempt: 1
+//	});
+
+    //banner
+    var banner = new Vue({
+        el:'.swiper-wrapper',
+        data:{
+            list_banner:[]
+        }
+    });
+    var prizes = new Vue({
+        el:'.Zhuanpan_wai',
+        data:{
+            list_prizes:[]
+        }
+    });
+    window.onload = function(){
+        isLogin();
+        get_msg();
+        getPrize();
+        get_list();
+
+    };
+    //判断用户是否登录
+    function isLogin() {
+        $.getJSON("?c=prize&a=isLogin",{},function (data) {
+            if (data.status){
+                $("#times").text(data.msg);
+                $("#inner").css("display","block");
+                $("#outer").css("display","none");
+                if (data.mark){
+                    layer.msg(data.info);
+                }
+            }
+        });
+    }
+    //获取轮播图和活动规则
+    function get_msg() {
+        $.getJSON("?c=prize&a=banner",{},function (data) {
+            if (data.status){
+                extend(banner.list_banner,data.msg);
+                app.$nextTick(function(){
+                    clock();
+                });
+                if (data.rule!=''){
+                    $("#rule").html(data.rule);
+                }
+            }else {
+                layer.msg(data.msg);
+            }
+        });
+    }
+    //获取大转盘奖品
+    function getPrize() {
+        $.getJSON("?c=prize&a=prize",{},function (data) {
+            if (data.status){
+                extend(prizes.list_prizes,data.msg);
+            }else {
+                layer.msg(data.msg);
+            }
+        });
+    }
+    //获取中奖名单
+    function get_list(){
+        $.getJSON("?c=prize&a=list",function (result) {
+            if(!result.status){
+                layer.msg(result.msg);
+            }else {
+                extend(app.list_prize, result.msg);
+                app.$nextTick(function(){
+                    roll();
+                });
+                dataDeal(app.list_prize);
+            }
+        });
+    }
+    //号码隐藏
+    function dataDeal(data) {
+        for(var i = 0; i < data.length; i++) {
+            var start = data[i]['tel'].slice(0,3);
+            var end = data[i]['tel'].slice(-4);
+            data[i]['dtime'] = data[i]['dtime'].slice(5,16);
+            data[i]['tel'] = start+'****'+end;
+        }
+        return data;
+    }
+
+    var pan = true;
+    $('.Zhuanpan .Anniu').click(function () {
+        if(pan){
+            pan = false;
+            $.getJSON("?c=prize&a=roll",function (data) {
+                if (data.status){
+                    var start = 0;
+                    if (data.no==8){
+                        start = 1;
+                    }else {
+                        start = 1*data.no+1;
+                    }
+                    goRoll(start);
+                    setTimeout(function(){
+                        pan = true;
+                    },4000)
+                    setTimeout(function () {
+                        if (data.msg=="谢谢参与"){
+                            $(".Yihan").css("display",'block');
+                        }else {
+                            $("#prize").text(data.msg);
+                            $(".zhongjiang").css("display",'block');
+                            app.$set(app.list_prize,app.list_prize.length,data.prize)
+                        }
+                        $("#times").text(data.times);
+                    },3500);
+                }else {
+                    layer.msg(data.msg);
+                    setTimeout(function(){
+                        pan = true;
+                    },2000)
+                }
+            });
+        }
+
+    });
+
+
+    function goRoll(start) {
+        var isture = true;
+        zhuan(start,(start-1)*45);
+    }
+
+    function zhuan(awards, angle) {
+        isture = true;
+        $('.Zhuanpan .t1').rotate({
+            easing: $.easing.easeInOutElastic,
+            angle: 0, //旋转的角度数
+            duration: 4000, //旋转时间
+            animateTo: angle + 1440, //给定的角度,让它根据得出来的结果加上1440度旋转
+            callback: function() {
+                isture = false;
+            }
+        })
+    }
+    
+</script>
+<script type="text/javascript">
+</script>
+
+</html>

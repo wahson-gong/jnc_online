@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height, user-scalable=no,initial-scale=1, minimum-scale=1, maximum-scale=1 ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的宴会</title>
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/style.css">
+    <script src="<?php echo $this->templates_path?>/js/jquery-1.11.0.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/swiper-3.4.2.jquery.min.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/tower.js"></script>
+</head>
+
+<body style="background:#ffd092;">
+    <section style='padding:.15rem .25rem 1.2rem .25rem;'>
+        <?php $rs=IndexController::jqAction(); ?>
+        <?php foreach($rs as $v): ?>
+           <div class="Jiangquan">
+            宴会单号：<?=$v['yanhuidanhao']?> <br>
+            宴会时间：<?=$v['yanhuishijian']?><br>
+            奖券号码：<?=$v['haoma']?><br>
+            开奖期数：<?=$v['qihao']?><br>
+            开奖时间：<?=$v['kaijiangshijian']?><br>
+
+               <?php if($v['zhuangtai']=='待开奖'){ ?>
+               <img src="<?php echo $this->templates_path?>/images/jm_03.png" class="t1" alt="">
+               <?php }elseif($v['zhuangtai']=='中奖'){ ?>
+               <img src="<?php echo $this->templates_path?>/images/jm_06.png" class="t1" alt="">
+               <?php }else{ ;?>
+               <img src="<?php echo $this->templates_path?>/images/jm_09.jpg" class="t1" alt="">
+
+               <?php } ?>
+           </div>
+        <?php endforeach; ?>
+
+    </section>
+  <?php include CUR_VIEW_PATH."templates".DS."m".DS."footer.html";?>
+    <aside>
+        <div class="T_aside">
+            <a href="/?c=single&m=act_dzp">
+                <img src="<?php echo $this->templates_path?>/images/wode.png" alt="">
+                <span>抽奖</span>
+            </a>
+            <a href="">
+                <img src="<?php echo $this->templates_path?>/images/kefu.png" alt=""><span>客服</span>
+            </a>
+        </div>
+    </aside>
+</body>
+
+
+</html>
