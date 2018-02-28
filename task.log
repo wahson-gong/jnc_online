@@ -1,6 +1,0 @@
-view plain copy
-
-#! /www/wdlinux/php/bin/php -q
-2018-02-07 18:11:01﻿<br />
-<b>Notice</b>:  Undefined index: HTTP_USER_AGENT in <b>/www/web/jnc/public_html/framework/libraries/Common.class.php</b> on line <b>429</b><br />
-球衣已被抽完</br>杯子已被抽完</br>更新完成
