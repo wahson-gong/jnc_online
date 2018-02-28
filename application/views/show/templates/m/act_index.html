@@ -1,0 +1,41 @@
+<aside>
+    <div class="T_aside">
+        <a href="?c=single&m=index_wdyh">
+            <img src="<?php echo $this->templates_path?>/images/wode.png" alt="">
+            <span>我的</span>
+        </a>
+        <a href="/?c=single&m=index_kfzx">
+            <img src="<?php echo $this->templates_path?>/images/kefu.png" alt=""><span>客服</span>
+        </a>
+    </div>
+</aside>
+<footer>
+    <div class="T_footer">
+        <ul class="clearfix">
+            <li class="<?=$_GET['m']=='act_jzzl'?'active':''?>">
+                <a href="?c=single&m=act_jzzl">
+                    <img src="<?php echo $this->templates_path?>/images/feiji.png" alt="">
+                    <span>极致之旅</span>
+                </a>
+            </li>
+            <li class="<?=$_GET['m']=='act_dzp'?'active':''?>">
+                <a href="?c=single&m=act_dzp">
+                    <img src="<?php echo $this->templates_path?>/images//dazhuanpan.png" alt="">
+                    <span>大转盘</span>
+                </a>
+            </li>
+            <li class="<?=$_GET['m']=='act_zpq'?'active':''?>">
+                <a href="?c=single&m=act_zpq">
+                    <img src="<?php echo $this->templates_path?>/images/zhaopian.png" alt="">
+                    <span>照片墙</span>
+                </a>
+            </li>
+            <li class="<?=$_GET['m']=='act_hjmd'?'active':''?>">
+                <a href="?c=single&m=act_hjmd">
+                    <img src="<?php echo $this->templates_path?>/images/jiangpin.png" alt="">
+                    <span>获奖名单</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</footer>

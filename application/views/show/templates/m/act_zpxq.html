@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height, user-scalable=no,initial-scale=1, minimum-scale=1, maximum-scale=1 ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>照片墙</title>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?ec671709ad25c70148686506a76e5cc9";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/style.css">
+    <script src="<?php echo $this->templates_path?>/js/jquery-1.11.0.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/swiper-3.4.2.jquery.min.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/tower.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/vue.min.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/utility.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" src="<?php echo $this->templates_path?>/layer/layer.js"></script>
+</head>
+
+<body style="background:#ffd092;">
+    <div style="padding:.2rem; margin-bottom: 15%">
+        <div class="Zhaopianxq">
+            <h1 class="t1">
+                <span>奖券号码:</span>
+                <label class="code">-</label>
+
+            </h1>
+            <div class="t2">
+                <span>城市:</span>
+                <label class="city">-</label>
+                <span>单号:</span>
+                <label class="order">-</label>
+            </div>
+            <div class="t3">
+                <img class="picture" src="/application/views/show/templates/m/images/wutu.jpg" alt="">
+
+                <img src="<?php echo $this->templates_path?>/images/fangda_03.png" class="fd" alt="">
+            </div>
+            <ul>
+                <li>
+                    <span>奖券号码:</span><span class="code">-</span>
+                </li>
+                <li>
+                    <span>宴会城市:</span> <span class="city">-</span>
+                </li>
+                <li>
+                    <span>宴会单号:</span> <span class="order">-</span>
+                </li>
+                <li>
+                    <span>宴会时间:</span> <span id="date">-</span>
+                </li>
+                <li>
+                    <span>宴会地址:</span> <span id="address">-</span>
+                </li>
+                <li>
+                    <span>消费者姓名:</span> <span id="name">-</span>
+                </li>
+                <li>
+                    <span>消费者电话:</span> <span id="tel">-</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="Zanshu">
+                当前点赞数  <span id="like">0</span>
+        </div>
+
+        <div class="Dianz" id="zan">
+            <img src="<?php echo $this->templates_path?>/images/dz.png" class="m1" alt="">
+            <img src="<?php echo $this->templates_path?>/images/dza.png" class="m2" alt="">
+            <span>点赞</span>
+        </div>
+    </div>
+
+
+    <div class="Tanctu">
+        <img class="picture" src="/application/views/show/templates/m/images/wutu.jpg" alt="">
+    </div>
+
+    <?php include CUR_VIEW_PATH."templates/m/act_index.html";?>
+</body>
+<script>
+    window.onload = function(){
+        var reg = new RegExp("(^|&)id=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null){
+            var id = r[2];
+        }
+        $.getJSON("/?c=prize&a=detail&id="+id+"&url="+encodeURIComponent(location.href.split('#')[0]),function (data) {
+            if (data.status){
+                $('.code').text(data.msg['jiangquanhaoma']);
+                $('.city').text(data.msg['sheng']+data.msg['shi']);
+                $('.order').text(data.msg['yanhuidanhao']);
+                $('#date').text(data.msg['yanhuishijian'].slice(0,10));
+                $('#address').text(data.msg['yanhuidizhi']);
+                $('#name').text(data.msg['xingming'].slice(0,1)+"**");
+                $(".picture").attr("src",data.msg['touxiang'])
+                var start = data.msg['yonghuming'].slice(0,3);
+                var end = data.msg['yonghuming'].slice(-4);
+                $('#tel').text(start+"****"+end);
+                $('#like').text(data.msg['dianzan']);
+
+                //=================微信分享================
+                //微信分享
+                wx.config({
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: data.package['appId'], // 必填，公众号的唯一标识
+                    timestamp: data.package['timestamp'], // 必填，生成签名的时间戳
+                    nonceStr:  data.package['nonceStr'], // 必填，生成签名的随机串
+                    signature: data.package['signature'],// 必填，签名，见附录1
+                    jsApiList: [
+                        'onMenuShareTimeline',
+                        'onMenuShareAppMessage',
+                        'onMenuShareWeibo',
+                        'onMenuShareQQ',
+                        'onMenuShareQZone',
+                        'hideMenuItems',
+                        'showMenuItems'
+                    ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                });
+
+                wx.ready(function(){
+                    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+                    var title = '买剑南春办宴会赢极致之旅';
+                    var imgUrl = data.msg['touxiang'];
+                    var link =  location.href.split('#')[0];
+                    var desc = '中国三大名酒剑南春办宴会，每瓶赠现金,还可获得俄罗斯世界杯、南极冰川之旅等机会。';
+                    //分享朋友圈
+                    wx.onMenuShareTimeline({
+                        title: title, // 分享标题
+                        link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        desc: desc,
+                        imgUrl: imgUrl, // 分享图标
+                        success: function () {
+                            // 用户确认分享后执行的回调函数
+                        },
+                        cancel: function () {
+                            // 用户取消分享后执行的回调函数
+                        }
+                    });
+                    //分享给好友
+                    wx.onMenuShareAppMessage({
+                        title: title, // 分享标题
+                        desc: desc, // 分享描述
+                        link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: imgUrl, // 分享图标
+                        success: function () {
+// 用户确认分享后执行的回调函数
+                        },
+                        cancel: function () {
+// 用户取消分享后执行的回调函数
+                        }
+                    });
+
+                    wx.onMenuShareWeibo({
+                        title: title,
+                        desc: desc,
+                        link: link,
+                        imgUrl: imgUrl,
+                        success: function () {
+                            //alert('分享成功');
+                        },
+                        cancel: function () {
+                            //alert('您已取消分享');
+                        }
+                    });
+
+                    wx.onMenuShareQQ({
+                        title: title,
+                        desc: desc,
+                        link: link,
+                        imgUrl: imgUrl,
+                        success: function () {
+                            //alert('分享成功');
+                        },
+                        cancel: function () {
+                            //alert('您已取消分享');
+                        }
+                    });
+
+                    wx.onMenuShareQZone({
+                        title: title, // 分享标题
+                        desc: desc, // 分享描述
+                        link: link, // 分享链接
+                        imgUrl: imgUrl, // 分享图标
+                        success: function () {
+// 用户确认分享后执行的回调函数
+                        },
+                        cancel: function () {
+// 用户取消分享后执行的回调函数
+                        }
+                    });
+
+
+                    wx.error(function (res) {
+                        console.log(res.errMsg);
+                    });
+                });
+
+
+            }
+        });
+
+        $.getJSON("?c=prize&a=get&id="+id,function (data) {
+            if (data.status){
+                console.log(data.msg);
+            }
+        });
+
+        $("#zan").click(function () {
+            $.getJSON("?c=prize&a=like&id="+id,function (data) {
+                if (data.status){
+                    $('#like').text(data.msg);
+                }else {
+                    layer.msg(data.msg)
+                }
+            })
+        });
+
+    }
+
+
+</script>
+
+
+</html>

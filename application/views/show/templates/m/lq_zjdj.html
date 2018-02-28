@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height, user-scalable=no,initial-scale=1, minimum-scale=1, maximum-scale=1 ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的宴会</title>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?ec671709ad25c70148686506a76e5cc9";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/style.css">
+    <script src="<?php echo $this->templates_path?>/js/jquery-1.11.0.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/swiper-3.4.2.jquery.min.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/tower.js"></script>
+</head>
+
+<body style="background:#ffd092;">
+    <section style='padding:.15rem .25rem 1.2rem .25rem;'>
+        <div class="Jp_xuz">
+            <h1>领取奖品品须知 </h1>
+            <div class="t1">
+                1、中奖者请认真填写实际旅行者得真实姓名，电话，身份证号码。
+                <br> 2、工作人员会主动联系中奖者告知实际领奖流程，请中奖者在中奖后保持电话畅通，以便工作人员确认。
+                <br> 3、中奖者在实名确认前可自由变更实际旅行者，后台工作人员人工确认后将不再另作变更。
+                <br> 4、实际旅行者请在3月31日之前按照工作人员要求提供本人电子版彩色证件照，护照首页，正反面身份证，手机号。
+                <br> 5、俄罗斯世界杯之旅中奖者由我公司承担的费用包括：
+                <br> ①往返莫斯科国际机票（2018年6月16日北京、上海前往——2018年6月20日返回北京、上海）。
+                <br> ②2018年6月17日德国VS墨西哥小组赛门票。
+                <br> 备注：其他费用由旅行者自行承担。
+                <br> 6、该活动是剑南春为宴会消费者举办的回馈活动，中奖名额不可变现不得转售。
+                <br> 7、为了让旅行者有更加美好的旅行体验，我司还将为你购买旅行期间相关保险。
+                <br> 8、因用户个人原因导致行程无法进行的，我司不承担任何责任。
+                <br>
+                <br>
+                <br>
+                <br>剑南春祝您旅途愉快！
+            </div>
+            <div class="t2">
+                <span>展开全部</span>
+                <img src="<?php echo $this->templates_path?>/images/xial_03.jpg" alt="">
+            </div>
+            <div class="login_t1">
+                <span> </span>
+                <label for="">我已经阅读并同意</label>
+                <a href="">《剑南春宴会抽奖活动协议》</a>
+            </div>
+            <input type="hidden" id="id" value="<?=$_GET['id']?>">
+            <input type="text" class="Input_t1" id="name" placeholder="请输入您的姓名">
+            <input type="text" class="Input_t1" id="tel" placeholder="请输入您的电话">
+            <input type="text" class="Input_t1" id="idcard" placeholder="请输入您的身份证号码">
+        </div>
+    </section>
+    <footer>
+        <div class="Tijiao_xuz" id="tj">
+            立即提交
+        </div>
+    </footer>
+
+
+    <!-- 弹出 -->
+    <!-- 遮罩 -->
+    <div class="zhezhao"></div>
+    <!-- 不能登陆 -->
+    <div class="Tanc_">
+        <img src="<?php echo $this->templates_path?>/images/close_03.png" class="Ta_close" alt="">
+        <p class="Tanc_p">
+               <span>请勾选</span> 《剑南春宴会抽奖活动协议》
+        </p>
+        <div class="Tanc_a"> 好的,知道了</div>
+    </div>
+
+    <aside>
+        <div class="T_aside">
+            <a href="/?c=single&m=act_dzp">
+                <img src="<?php echo $this->templates_path?>/images/wode.png" alt="">
+                <span>抽奖</span>
+            </a>
+            <a href="/?c=single&m=index_kfzx">
+                <img src="<?php echo $this->templates_path?>/images/kefu.png" alt=""><span>客服</span>
+            </a>
+        </div>
+    </aside>
+</body>
+
+
+
+</html>

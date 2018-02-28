@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height, user-scalable=no,initial-scale=1, minimum-scale=1, maximum-scale=1 ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>照片墙</title>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?ec671709ad25c70148686506a76e5cc9";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/style.css">
+</head>
+
+<body style="background:#ffd092;">
+<div id="app">
+    <!-- 筛选条件 -->
+    <div class="H_shaix">
+        <span class="t1">
+            <label id="date">期数</label>
+            <img src="<?php echo $this->templates_path?>/images/sanj_03.jpg" alt="">
+        </span>
+        <span class="t2">
+            <label id="area">区域</label>
+            <img src="<?php echo $this->templates_path?>/images/sanj_03.jpg" alt="">
+        </span>
+        <a href="?c=single&m=act_zpss" class="t3">
+            <img src="<?php echo $this->templates_path?>/images/sousuo_03.jpg" alt=""> 搜索
+        </a>
+    </div>
+    <!-- 筛选条件 end -->
+    <section style="padding-bottom:1.05rem;padding-top:.8rem">
+        <div class="Zhaopianq clearfix">
+            <div class="Zpzs"  v-for="li in list_yhmd"  v-cloak >
+                <a :href="'?c=prize&a=del&id='+li.id">
+                    <img   alt="宴会图片"  src=""  v-lazy="li.touxiang" width="100%">
+                    <div class="t2">
+                        {{li.yanhuishijian}}
+                        <img src="<?php echo $this->templates_path?>/images/zany.png" class="m1" alt="">
+                        <img src="<?php echo $this->templates_path?>/images/zan.png" class="m2" alt="">
+                    </div>
+                    <div class="Zwenzi">
+                        <div class="t4">
+                            {{li.yanhuidizhi}}
+                        </div>
+                        <div class="t5">
+                            <span>奖券号码</span>
+                            <label> {{li.jiangquanhaoma}}</label>
+                        </div>
+                        <div class="t6">
+                            {{li.sheng}}{{li.shi}}
+                            <br> 单号:{{li.yanhuidanhao}}
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    <?php include CUR_VIEW_PATH."templates/m/act_index.html";?>
+    <!-- 遮罩 -->
+    <div class="zhezhao"></div>
+    <!-- 筛选 下拉 t1 -->
+    <div class="Shaixia">
+        <ul class="t1">
+            <li v-for="(li,index) in list_issue" :class="li.xuanz?'active':''" @click="uchange(li,index)"  ref="menuItem">
+                {{li.qihao}}
+            </li>
+        </ul>
+    </div>
+    <!-- 筛选下来 地区 -->
+    <div class="Shaixiadiqu">
+        <ul class="t1">
+            <li class="xuanz">区域</li>
+            <li v-for="(li,offset) in list_area" :class="li.xuanz?'active':''" @click="achange(li,offset)"  ref="item">
+                {{li.quyumingcheng}}
+            </li>
+        </ul>
+    </div>
+</div>
+    <script src="<?php echo $this->templates_path?>/js/jquery-1.11.0.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/swiper-3.4.2.jquery.min.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/tower.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/vue.min.js"></script>
+    <!-- lazyload -->
+    <script src="<?php echo $this->templates_path?>/js/vue-lazyload.js"></script>
+    <!-- lazyload -->
+    <script src="<?php echo $this->templates_path?>/js/utility.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" src="<?php echo $this->templates_path?>/layer/layer.js"></script>
+    <script type="text/javascript">
+    
+    var app = new Vue({
+		el: '#app',
+		data: {
+			list_yhmd: [],
+			list_issue:[],
+            list_area:[]
+		},
+        methods: {
+            uchange: function (item, index) {
+                $(".Shaixia li").removeClass("active");
+                $(this).addClass("active");
+                var c = this.$refs.menuItem[index].innerText;
+                $("#date").text(c);
+                $(".zhezhao")
+                    .stop()
+                    .fadeToggle();
+                $(".Shaixia")
+                    .stop()
+                    .slideToggle();
+            },
+            achange: function (item, offset) {
+                $(".Shaixiadiqu li").removeClass("active");
+                $(this).addClass("active");
+                var c = this.$refs.item[offset].innerText;
+                $("#area").text(c);
+                $(".zhezhao")
+                    .stop()
+                    .fadeToggle();
+                $(".Shaixiadiqu")
+                    .stop()
+                    .slideToggle();
+            }
+        }
+	});
+
+    //lazyload
+    Vue.use(VueLazyload, {
+        preLoad: 1.3,
+        error: '<?php echo $this->templates_path?>/images/wutu.jpg',
+        loading: '<?php echo $this->templates_path?>/images/zp_03.jpg',
+        attempt: 1
+    });
+
+    window.onload = function(){  
+    	get_zpq();
+        get_issue();
+        get_area();
+        get_share();
+        $.get("?c=base&a=color",function (data) {
+            $("body").css("background-color","#"+data.msg);
+        })
+    };
+    function get_share() {
+        $.getJSON("?c=prize&a=share&url="+encodeURIComponent(location.href.split('#')[0]),function (data) {
+            //=================微信分享================
+            wx.config({
+                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: data.package['appId'], // 必填，公众号的唯一标识
+                timestamp: data.package['timestamp'], // 必填，生成签名的时间戳
+                nonceStr:  data.package['nonceStr'], // 必填，生成签名的随机串
+                signature: data.package['signature'],// 必填，签名，见附录1
+                jsApiList: [
+                    'onMenuShareTimeline',
+                    'onMenuShareAppMessage',
+                    'onMenuShareWeibo',
+                    'onMenuShareQQ',
+                    'onMenuShareQZone',
+                    'hideMenuItems',
+                    'showMenuItems'
+                ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+            });
+
+            wx.ready(function(){
+                // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+                var title = '买剑南春办宴会赢极致之旅';
+                var imgUrl = "http://jnc.cdsile.cn/application/views/show/templates/m/images/share_01.jpg";
+                var link =  location.href.split('#')[0];
+                var desc = '中国三大名酒剑南春办宴会，每瓶赠现金,还可获得俄罗斯世界杯、南极冰川之旅等机会。';
+                //分享朋友圈
+                wx.onMenuShareTimeline({
+                    title: title, // 分享标题
+                    link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    desc: desc,
+                    imgUrl: imgUrl, // 分享图标
+                    success: function () {
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                //分享给好友
+                wx.onMenuShareAppMessage({
+                    title: title, // 分享标题
+                    desc: desc, // 分享描述
+                    link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: imgUrl, // 分享图标
+                    success: function () {
+// 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+// 用户取消分享后执行的回调函数
+                    }
+                });
+
+                wx.onMenuShareWeibo({
+                    title: title,
+                    desc: desc,
+                    link: link,
+                    imgUrl: imgUrl,
+                    success: function () {
+                        //alert('分享成功');
+                    },
+                    cancel: function () {
+                        //alert('您已取消分享');
+                    }
+                });
+
+                wx.onMenuShareQQ({
+                    title: title,
+                    desc: desc,
+                    link: link,
+                    imgUrl: imgUrl,
+                    success: function () {
+                        //alert('分享成功');
+                    },
+                    cancel: function () {
+                        //alert('您已取消分享');
+                    }
+                });
+
+                wx.onMenuShareQZone({
+                    title: title, // 分享标题
+                    desc: desc, // 分享描述
+                    link: link, // 分享链接
+                    imgUrl: imgUrl, // 分享图标
+                    success: function () {
+// 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+// 用户取消分享后执行的回调函数
+                    }
+                });
+
+
+                wx.error(function (res) {
+                    console.log(res.errMsg);
+                });
+            });
+        })
+    }
+    //搜索
+    $(".Shaixia").click(function () {
+        app.list_yhmd=[];
+        get_zpq();
+        var area = $("#area").text("区域");
+        get_area();
+    });
+    $(".Shaixiadiqu").click(function () {
+        app.list_yhmd=[];
+        get_zpq();
+    });
+
+    function get_zpq(){
+        var date = $("#date").text();
+        var area = $("#area").text();
+        $(".Zpzs").remove();
+        $.getJSON('?c=prize&a=gallery&page=1&date='+date+"&area="+area, function(result) {
+            if (result.status){
+                extend(app.list_yhmd, result.msg);
+                dataDeal(app.list_yhmd);
+                $(".Zhaopianq p").remove();
+            }else {
+                $(".Zhaopianq p").remove();
+                $(".Zhaopianq").append("<p>暂无照片</p>");
+            }
+        });
+
+    }
+
+    function get_issue() {
+        $.getJSON("?c=prize&a=issue",function (data) {
+            if (data.status){
+                extend(app.list_issue,data.msg);
+            }
+        })
+    }
+
+    function get_area() {
+        var date = $("#date").text();
+        $.getJSON("?c=prize&a=area&date="+date,function (data) {
+            if (data.status){
+                app.list_area.splice(0,app.list_area.length);
+                extend(app.list_area,data.msg);
+                for(var i=0;i<data.msg.length;i++){
+                    app.$set(app.list_area,app.list_area.i,data.msg[i])
+                }
+            }
+        })
+    }
+
+
+    function dataDeal(data) {
+        for(var i = 0; i < data.length; i++) {
+            data[i]['yanhuishijian'] = data[i]['yanhuishijian'].slice(2,10);
+        }
+        return data;
+    }
+
+    $(function () {
+        var page = 2;
+
+        var mark = true;
+        var working = true;
+        $(window).scroll(function(){
+            var date = $("#date").text();
+            var area = $("#area").text();
+            totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
+            if($(document).height() <= totalheight){
+                if (mark)
+                    if (working){
+                        $.ajax({
+                            url : '?c=prize&a=gallery&page=1&date='+date+"&area="+area+"&page="+page,
+                            dataType : "json",
+                            type : "GET",
+                            beforeSend:function () {
+                                working = false;
+                                console.log(working);
+                            },
+                            success:function (data) {
+                                if (data.status){
+                                    for(var i=0;i<data.msg.length;i++){
+                                        app.$set(app.list_yhmd,app.list_yhmd.length,data.msg[i])
+                                    }
+                                    working = true;
+                                    console.log(working);
+                                }else {
+                                    layer.msg("已经到底了");
+                                    mark = false;
+                                }
+                            }
+                        });
+                    }
+                page = page+1;
+            }
+        });
+    })
+    </script>
+
+
+</body>
+</html>

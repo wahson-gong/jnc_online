@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height, user-scalable=no,initial-scale=1, minimum-scale=1, maximum-scale=1 ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的宴会</title>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?ec671709ad25c70148686506a76e5cc9";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/style.css">
+    <script src="<?php echo $this->templates_path?>/js/jquery-1.11.0.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/swiper-3.4.2.jquery.min.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/tower.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/webuploader.js"></script>
+    <script src="<?php echo $this->templates_path?>/layer/layer.js"></script>
+</head>
+
+<body style="background:#ffd092;">
+    <section style='padding:.15rem .25rem 1.2rem .25rem;' id="wdyh">
+
+
+    
+    </section>
+    <?php include CUR_VIEW_PATH."templates".DS."m".DS."footer.html";?>
+    <aside>
+        <div class="T_aside">
+            <a href="/?c=single&m=act_dzp">
+                <img src="<?php echo $this->templates_path?>/images/wode.png" alt="">
+                <span>抽奖</span>
+            </a>
+            <a href="/?c=single&m=index_kfzx">
+                <img src="<?php echo $this->templates_path?>/images/kefu.png" alt=""><span>客服</span>
+            </a>
+        </div>
+    </aside>
+<script>
+    $.ajax({
+        url : 'index.php?p=show&c=index&a=wdyh',
+        dataType : "json",
+        type : "GET",
+        async:false,
+        success:function (msg) {
+            $(msg.msg).each(function (v,i) {
+                $('<div class="Yanh_s clearfix" >\n' +
+                    '        <div id="index.php?p=show&c=index&a=upload1&id=53" class="tou">\n' +
+                    '                <label data-id="'+this.id+'" class="my_uploader"></label>\n' +
+                    '                <img  src="'+this.touxiang+'" alt="">\n' +
+                    '                <p>\n' +
+                    '                    修改\n' +
+                    '                </p>\n' +
+                    '            </div>\n' +
+                    '            <div class="zhi">\n' +
+                    '                宴会单号：'+this.yanhuidanhao+' <br>\n' +
+                    '                宴会时间：'+this.yanhuishijian+'<br>\n' +
+                    '                剩余次数：'+(this.jifen)/5+' <br>\n' +
+                    '            </div>\n' +
+                    '            <a href="/?c=single&m=act_dzp" class=\'yes\'> 去抽奖 </a>\n' +
+                    '            </div>').appendTo('#wdyh');
+            })
+        }
+    });
+
+   /*  $('body').on('click','#yu',function () {
+        console.log($(this).closest('div').prop('id'));
+    }); */
+
+    
+    var temp_file_path="";
+    var temp_wdyh_id = "";
+    var   uploader = WebUploader.create({
+
+        // 选完文件后，是否自动上传。
+        auto: true,
+        // swf文件路径
+        swf:'/js/Uploader.swf',
+        // 文件接收服务端。
+        server:"index.php?p=show&c=admin&a=upload",
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: '.my_uploader',
+        // 只允许选择图片文件。
+            accept: {
+            title: 'Images',
+            extensions: 'gif,jpg,jpeg,bmp,png',
+            mimeTypes: 'image/*'
+        },
+    });
+    
+    uploader.on( 'uploadSuccess', function(file,response) {
+    	temp_file_path=response.url;
+
+        $.get('index.php?p=show&c=index&a=upload1',{id:temp_wdyh_id,url:temp_file_path});
+        location.reload();
+
+    });
+
+    
+    $(document).on("click",".my_uploader",function(){
+		
+    	 
+		var id = $(this).data('id');
+		temp_wdyh_id=id;
+		
+		
+	})
+	
+	
+   /*  var  uploader = WebUploader.create({
+
+
+
+        // 选完文件后，是否自动上传。
+        auto: true,
+        // swf文件路径
+        swf:'/js/Uploader.swf',
+        // 文件接收服务端。
+        server:"index.php?p=show&c=index&a=upload1&id=53",
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: '.my_uploader',
+        // 只允许选择图片文件。
+        data:{id:1},
+        method:"post",
+        accept: {
+            title: 'Images',
+            extensions: 'gif,jpg,jpeg,bmp,png',
+            mimeTypes: 'image/*'
+        },
+    }); */
+
+
+
+
+
+
+//     $('body').on('click','#111',function () {
+//         alert(1);
+//     })
+
+</script>
+</body>
+
+
+</html>

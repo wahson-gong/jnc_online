@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height, user-scalable=no,initial-scale=1, minimum-scale=1, maximum-scale=1 ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?ec671709ad25c70148686506a76e5cc9";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+    <title>剑南春极致之旅</title>
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/style.css">
+    <script src="<?php echo $this->templates_path?>/js/jquery-1.11.0.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/swiper-3.4.2.jquery.min.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/tower.js"></script>
+    <!--<link rel="stylesheet" href="//g.alicdn.com/de/prismplayer/2.5.0/skins/default/aliplayer-min.css" />-->
+    <!--<script type="text/javascript" src="//g.alicdn.com/de/prismplayer/2.5.0/aliplayer-min.js"></script>-->
+    <link rel="stylesheet" href="//g.alicdn.com/de/prismplayer/2.5.0/skins/default/aliplayer-min.css" />
+    <script type="text/javascript" src="//g.alicdn.com/de/prismplayer/2.5.0/aliplayer-min.js"></script>
+    <link href="http://vjs.zencdn.net/5.8.8/video-js.css" rel="stylesheet">
+
+    <!-- If you'd like to support IE8 -->
+    <script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+
+    <script src="<?php echo $this->templates_path?>/js/vue.min.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/jquery.rotate.min.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/utility.js"></script>
+    <script type="text/javascript" src="<?php echo $this->templates_path?>/layer/layer.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+</head>
+
+<body style="background:#ffd092;">
+<div id="app">
+    <section style="padding-bottom:1.05rem;">
+        <!-- 轮播图 -->
+        <div class="swiper-container lunbo_1">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" v-for="li in list_banner" v-cloak>
+                    <img :src="li.picture" alt="">
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+
+
+        <div class="Jizhi_t1">
+            <img src="<?php echo $this->templates_path?>/images/jn_02.png" alt="" class="t1">
+            <img src="<?php echo $this->templates_path?>/images/j_02.png" alt="" class="Img_t1">
+            <!--<div  class="prism-player" id="J_prismPlayer" style="position: absolute"></div>-->
+            <div class="Daojishi">
+                <img src="<?php echo $this->templates_path?>/images/zbd_03.png" class="m1" alt="">
+                 <?php $a=empty(AdminController::timeAction())?'2018-2-10 12:00:00':AdminController::timeAction()?>
+                <span class="tmm" style="display:none"><?=$a?></span>
+                <!--<span class="tmm" style="display:none">2018-02-28 19:30:00</span>-->
+                <div class="Timek">
+                    <span class="t1">0</span>
+                    <span class="t2">0</span>
+                    <span class="t3">0</span>
+                    <span class="t4">0</span>
+                    <span class="t5">0</span>
+                    <span class="t6">0</span>
+                    <span class="t7">0</span>
+                    <span class="t8">0</span>
+                </div>
+            </div>
+<!--<div><?=$a?></div>-->
+        </div>
+
+        <div class="Zanniu clearfix" style="margin-top: 10px">
+            <div class="fl">
+                <a id="getcode" href="javascript:;" class="anniu_style_t1">往期视频</a>
+                <span><!--领取奖券参与抽奖-->前往观看往期视频</span>
+            </div>
+            <div class="fl">
+                <a id="kzb" href="javascript:;" class="anniu_style_t1">观看直播</a>
+                <span>共同见证开奖盛况</span>
+            </div>
+        </div>
+
+
+        <div class="Ming_t1">
+            <p> 剑南春环球极致之旅获奖名单 </p>
+        </div>
+        <div id="first">
+            <div class="Ming_t2">
+                —— 第<span id="issue1"></span>期<span id="target1"></span>获奖名单 ——
+            </div>
+            <div class="Tong_pad">
+                <div class="Hj_head clearfix">
+                    <span class="t4">姓名</span>
+                    <span class="t5">电话</span>
+                    <span class="t6">城市</span>
+                    <span class="t7">宴会时间</span>
+                    <span class="t8">奖券号码</span>
+                </div>
+                <ul class="H_body">
+
+                    <li v-for="li in list_one" v-cloak :class="li.xuanz?'active':''" @click="uchange(li)">
+                        <span class="t4">{{li.xingming}}</span>
+                        <span class="t5">{{li.yonghuming}}</span>
+                        <span class="t6">{{li.chengshi}}</span>
+                        <span class="t7">{{li.yanhuishijian}}</span>
+                        <span class="t8">{{li.zhongjianghaoma}}</span>
+                    </li>
+
+                </ul>
+
+                <a href="?c=single&m=act_hjmd" id="one_link" class="more"> 查看更多... </a>
+            </div>
+        </div>
+
+        <div id="second" style="display: none">
+            <div class="Ming_t2">
+                —— 第<span id="issue2"></span>期“<span id="target2"></span>”获奖名单 ——
+            </div>
+            <div class="Tong_pad">
+                <div class="Hj_head clearfix">
+                    <span class="t4">姓名</span>
+                    <span class="t5">电话</span>
+                    <span class="t6">城市</span>
+                    <span class="t7">宴会时间</span>
+                    <span class="t8">奖券号码</span>
+                </div>
+                <ul class="H_body">
+                    <li v-for="li in list_two" v-cloak :class="li.xuanz?'active':''" @click="uchange(li)">
+                        <span class="t4">{{li.xingming}}</span>
+                        <span class="t5">{{li.yonghuming}}</span>
+                        <span class="t6">{{li.chengshi}}</span>
+                        <span class="t7">{{li.yanhuishijian}}</span>
+                        <span class="t8">{{li.zhongjianghaoma}}</span>
+                    </li>
+
+                </ul>
+
+                <a href="?c=single&m=act_hjmd" id="two_link" class="more"> 查看更多... </a>
+            </div>
+        </div>
+
+        <!-- 活动详情 -->
+        <div class=" Tong_pad">
+            <div class="Huodxq">
+                <div class="t2">活动详情</div>
+                <p class="t1" id="rule">
+                    1.固定时间开奖：每周二固定时间在剑南春官方微信开奖，根据上一周的实际宴会场次和中奖概率投放名额（方便淡旺季的控制）。
+                    <br> 2.上传宴会照片：每场宴会本身会上传视频和照片，消费者在宴会系统中上传宴会现场照片（以宴会为背景，业务员+客户+酒的合影），抽奖照片按顺序编号。其目的为体现抽奖者身份的真实性，非我公司安排的卧底。按宴席桌数决定消费者上传照片的数量，体现了抽奖次数，如当场宴会有30桌，则消费者可上传6张照片用于抽奖。
+                </p>
+            </div>
+        </div>
+        <!-- 活动详情 end -->
+    </section>
+    <aside>
+        <div class="T_aside">
+            <a href="?c=single&m=index_wdyh" style="display: none" id="is_in">
+                <img src="<?php echo $this->templates_path?>/images/wode.png" alt="">
+                <span>我的</span>
+            </a>
+            <a href="?c=login&m=index" style="display: block" id="is_out">
+                <img src="<?php echo $this->templates_path?>/images/wode.png" alt="">
+                <span>领券</span>
+            </a>
+            <a href="/?c=single&m=index_kfzx">
+                <img src="<?php echo $this->templates_path?>/images/kefu.png" alt=""><span>客服</span>
+            </a>
+        </div>
+    </aside>
+    <footer>
+        <div class="T_footer">
+            <ul class="clearfix">
+                <li class="<?=$_GET['m']=='act_jzzl'?'active':''?>">
+                    <a href="?c=single&m=act_jzzl">
+                        <img src="<?php echo $this->templates_path?>/images/feiji.png" alt="">
+                        <span>极致之旅</span>
+                    </a>
+                </li>
+                <li class="<?=$_GET['m']=='act_dzp'?'active':''?>">
+                    <a href="?c=single&m=act_dzp">
+                        <img src="<?php echo $this->templates_path?>/images//dazhuanpan.png" alt="">
+                        <span>大转盘</span>
+                    </a>
+                </li>
+                <li class="<?=$_GET['m']=='act_zpq'?'active':''?>">
+                    <a href="?c=single&m=act_zpq">
+                        <img src="<?php echo $this->templates_path?>/images/zhaopian.png" alt="">
+                        <span>照片墙</span>
+                    </a>
+                </li>
+                <li class="<?=$_GET['m']=='act_hjmd'?'active':''?>">
+                    <a href="?c=single&m=act_hjmd">
+                        <img src="<?php echo $this->templates_path?>/images/jiangpin.png" alt="">
+                        <span>获奖名单</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+</div>
+</body>
+<script>
+
+
+    var Timek = $(".Timek");
+    var zong = 0;
+    var zongtime = null;
+
+        let tmm = $(".Daojishi .tmm").text();
+        tmm = tmm.replace(/-/g,"/");
+        tmm = new Date(tmm);
+        tmm = tmm.getTime() / 1000;
+
+        let now = new Date();
+        now = parseInt(now.getTime() / 1000);
+
+        zong = tmm - now;
+        if (zong > 0) {
+            zongtime = setInterval(timebout, 1000);
+        }
+
+        function timebout() {
+            zong--;
+            let tian = Math.floor(zong / (24 * 60 * 60));
+            let shi = Math.floor((zong % (60 * 60 * 24)) / (60 * 60));
+            let fen = Math.floor(zong % (24 * 60 * 60 ) % (60 * 60) / 60);
+            let miao = Math.floor(zong % (24 * 60 * 60 ) % (60 * 60) % 60);
+            if (tian >= 10) {
+                $(".Timek .t1").html(Math.floor(tian / 10));
+                $(".Timek .t2").html(tian % 10);
+            } else {
+                $(".Timek .t1").html(0);
+                $(".Timek .t2").html(tian);
+            }
+            if (shi >= 10) {
+                $(".Timek .t3").html(Math.floor(shi / 10));
+                $(".Timek .t4").html(shi % 10);
+            } else {
+                $(".Timek .t3").html(0);
+                $(".Timek .t4").html(shi);
+            }
+            if (fen >= 10) {
+                $(".Timek .t5").html(Math.floor(fen / 10));
+                $(".Timek .t6").html(fen % 10);
+            } else {
+                $(".Timek .t5").html(0);
+                $(".Timek .t6").html(fen);
+            }
+            if (miao >= 10) {
+                $(".Timek .t7").html(Math.floor(miao / 10));
+                $(".Timek .t8").html(miao % 10);
+            } else {
+                $(".Timek .t7").html(0);
+                $(".Timek .t8").html(miao);
+            }
+            if (zong <= 0) {
+                clearInterval(zongtime);
+                window.location.href = '/?c=single&m=act_wqsp';
+
+            }
+        }
+
+</script>
+<script src="<?php echo $this->templates_path?>/js/jquery.kxbdmarquee.js"></script>
+<script>
+
+
+
+  /*
+    var player = new Aliplayer({
+        id: 'J_prismPlayer',
+        width: '100%',
+        autoplay: false,
+        //支持播放地址播放,此播放优先级最高
+        source : 'http://admin.dzleg.cn/AppName/StreamName.m3u8?auth_key=1517471856-0-0-e35ca08ba4e65cd0db608658e1e77c59',
+        //播放方式二：点播用户推荐
+        vid : '1e067a2831b641db90d570b6480fbc40',
+        playauth : '',
+        cover: 'http://liveroom-img.oss-cn-qingdao.aliyuncs.com/logo.png',
+        //播放方式三：仅MTS用户使用
+        vid : '1e067a2831b641db90d570b6480fbc40',
+        accId: '',
+        accSecret: '',
+        stsToken: '',
+        domainRegion: '',
+        authInfo: '',
+        //播放方式四：使用STS方式播放
+        vid : '1e067a2831b641db90d570b6480fbc40',
+        accessKeyId: '',
+        securityToken: '',
+        accessKeySecret: ''
+    },function(player) {
+            console.log('播放器创建好了。')
+        });*/
+
+   function clock(){
+        var mySwiper = new Swiper('.lunbo_1', {
+            autoplay: 3000, //可选选项，自动滑动
+            pagination: '.swiper-pagination',
+            loop: true,
+        })
+    }
+    var app = new Vue({
+        el: '#app',
+        data: {
+            list_one: [],
+            list_two: [],
+            list_banner: []
+        },
+        methods:{
+            uchange:function(item){
+                if(item.xuanz){
+                    app.$set(item,'xuanz',false);
+                }else{
+                    app.$set(item,'xuanz',true);
+                }
+            }
+        }
+    });
+    $(function () {
+        get_lists();
+        get_rule();
+        get_banner();
+        is_login();
+        get_share();
+    });
+    function get_share() {
+      $.getJSON("?c=prize&a=share&url="+encodeURIComponent(location.href.split('#')[0]),function (data) {
+          //=================微信分享================
+          wx.config({
+              debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+              appId: data.package['appId'], // 必填，公众号的唯一标识
+              timestamp: data.package['timestamp'], // 必填，生成签名的时间戳
+              nonceStr:  data.package['nonceStr'], // 必填，生成签名的随机串
+              signature: data.package['signature'],// 必填，签名，见附录1
+              jsApiList: [
+                  'onMenuShareTimeline',
+                  'onMenuShareAppMessage',
+                  'onMenuShareWeibo',
+                  'onMenuShareQQ',
+                  'onMenuShareQZone',
+                  'hideMenuItems',
+                  'showMenuItems'
+              ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          });
+
+          wx.ready(function(){
+              // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+              var title = '剑南春极致之旅正在大派送';
+              var imgUrl = "http://jnc.cdsile.cn/application/views/show/templates/m/images/share_01.jpg";
+              var link =  location.href.split('#')[0];
+              var desc = '中国三大名酒剑南春办宴会，每瓶赠现金,还可获得俄罗斯世界杯、南极冰川之旅等机会。';
+              //分享朋友圈
+              wx.onMenuShareTimeline({
+                  title: title, // 分享标题
+                  link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                  desc: desc,
+                  imgUrl: imgUrl, // 分享图标
+                  success: function () {
+                      // 用户确认分享后执行的回调函数
+                  },
+                  cancel: function () {
+                      // 用户取消分享后执行的回调函数
+                  }
+              });
+              //分享给好友
+              wx.onMenuShareAppMessage({
+                  title: title, // 分享标题
+                  desc: desc, // 分享描述
+                  link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                  imgUrl: imgUrl, // 分享图标
+                  success: function () {
+// 用户确认分享后执行的回调函数
+                  },
+                  cancel: function () {
+// 用户取消分享后执行的回调函数
+                  }
+              });
+
+              wx.onMenuShareWeibo({
+                  title: title,
+                  desc: desc,
+                  link: link,
+                  imgUrl: imgUrl,
+                  success: function () {
+                      //alert('分享成功');
+                  },
+                  cancel: function () {
+                      //alert('您已取消分享');
+                  }
+              });
+
+              wx.onMenuShareQQ({
+                  title: title,
+                  desc: desc,
+                  link: link,
+                  imgUrl: imgUrl,
+                  success: function () {
+                      //alert('分享成功');
+                  },
+                  cancel: function () {
+                      //alert('您已取消分享');
+                  }
+              });
+
+              wx.onMenuShareQZone({
+                  title: title, // 分享标题
+                  desc: desc, // 分享描述
+                  link: link, // 分享链接
+                  imgUrl: imgUrl, // 分享图标
+                  success: function () {
+// 用户确认分享后执行的回调函数
+                  },
+                  cancel: function () {
+// 用户取消分享后执行的回调函数
+                  }
+              });
+
+
+              wx.error(function (res) {
+                  console.log(res.errMsg);
+              });
+          });
+      })
+  }
+    function is_login() {
+        $.getJSON("?c=base&a=getUser",function (data) {
+            if (data.status){
+                $("#is_in").css("display","block");
+                $("#is_out").css("display","none");
+            }else {
+                $("#is_in").css("display","none");
+                $("#is_out").css("display","block");
+            }
+        })
+    }
+
+      function get_banner() {
+          $.getJSON("?c=prize&a=ban",function (data) {
+              if (data.status){
+                  extend(app.list_banner,data.msg);
+                  app.$nextTick(function(){
+                      clock();
+                  });
+              }
+          })
+      }
+
+    function get_lists() {
+        $.get("?c=prize&a=double",function (data) {
+            if (data.status){
+                extend(app.list_one,data.one);
+                dataDeal(app.list_one);
+                console.log(data.two);
+                if (data.two=='empty'){
+                    $("#second").css('display','none');
+                }else {
+                    $("#second").css('display','block');
+                    extend(app.list_two,data.two);
+                    dataDeal(app.list_two);
+                    $("#two_link").attr("href","?c=single&m=act_hjmd&date="+data.two[0]['huojiangqishu']);
+                    $("#target2").text((data.two[0]['jiangpinmingcheng']));
+                    $("#issue2").text((data.two[0]['huojiangqishu'])).slice(-1);
+                }
+
+                $("#target1").text((data.one[0]['jiangpinmingcheng']));
+                $("#one_link").attr("href","?c=single&m=act_hjmd&date="+data.one[0]['huojiangqishu']);
+                $("#issue1").text((data.one[0]['huojiangqishu'])).slice(-1);
+            }else {
+                $("#first").css('display','none');
+                $("#second").css('display','none');
+            }
+        })
+    }
+    
+    function get_rule() {
+        $.getJSON("?c=prize&a=rule",function (data) {
+            if (data.status){
+                $("#rule").html(data.msg);
+            }
+        })
+    }
+    function dataDeal(data) {
+        for(var i = 0; i < data.length; i++) {
+            var start = data[i]['yonghuming'].slice(0,3);
+            var end = data[i]['yonghuming'].slice(-4);
+            data[i]['yanhuishijian'] = data[i]['yanhuishijian'].slice(5,10);
+            data[i]['yonghuming'] = start+'****'+end;
+        }
+        return data;
+    }
+    $("#getcode").click(function () {
+
+        $.getJSON('index.php?p=show&c=admin&a=czwqsp',function (msg) {
+            if (msg=='2'){
+                layer.msg('往期视频正在剪辑中,请耐心等待');
+            }else{
+                window.location.href="?c=single&m=act_wqsp&sp_id="+msg.qihao+"&qu="+msg.quyu+"";
+
+            }
+        })
+    });
+
+
+    $('#kzb').click(function () {
+        $.get('index.php?p=show&c=admin&a=timeout',function (msg) {
+            if (msg=='2'){
+                layer.msg('直播暂未开始,请耐心等待');
+            }else if(msg=='3'){
+                layer.msg('直播已经结束');
+            }
+            else {
+                window.location.href="?c=single&m=act_wqsp";
+            }
+        })
+    })
+</script>
+<script type="text/javascript">
+</script>
+
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height, user-scalable=no,initial-scale=1, minimum-scale=1, maximum-scale=1 ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>开奖视频</title>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?ec671709ad25c70148686506a76e5cc9";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/style.css">
+    <script src="<?php echo $this->templates_path?>/js/jquery-1.11.0.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/swiper-3.4.2.jquery.min.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/tower.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/vue.min.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/utility.js"></script>
+    <link rel="stylesheet" href="//g.alicdn.com/de/prismplayer/2.5.0/skins/default/aliplayer-min.css" />
+    <script type="text/javascript" src="//g.alicdn.com/de/prismplayer/2.5.0/aliplayer-min.js"></script>
+
+
+</head>
+
+<body style="background:#ffd092;">
+<div id="app">
+    <section style="padding-bottom:1.05rem;">
+        <?php if(empty($_GET['sp_id'])?true:false){ ?>
+        <div  class="prism-player" id="J_prismPlayer" style="position: absolute"></div>
+        <?php }else{ ;?>
+        <div class="S_video">
+            <video src="<?=$url['shipingdizhi']?>" controls="controls"></video>
+        </div>
+        <?php } ?>
+        <div class="Dao_t3">
+            <?php if(empty($_GET['sp_id'])?true:false){ ?>
+            <?php $jq=IndexController::dqjqAction(); ?>
+            <h1 style="margin-top: 200px"><?=$jq['qihao']?>正在直播</h1>
+            直播结束后，工作人员会迅速录入中奖信息，敬请等待……
+            <?php }else{ ;?>
+            <h1><?=$url['qihao']?></h1>
+            <p>
+               <!--华东06、华东66、华东666、华东1666-->
+               <!--西南06、西南66、西南666、西南1666-->
+               <!--华北06、华北66、华北666、华北1666-->
+               <!--西南06、西南66、西南666、西南1666-->
+               <!--华东06、华东66、华东666、华东1666-->
+                <?php foreach($rs as $v): ?>
+                 <?=$v['haoma']?> ,
+                <?php endforeach; ?>
+            </p>
+            <?php } ?>
+        </div>
+
+        <div class="Dao_t2">
+            <h1>往期开奖视频</h1>
+            <div class="swiper-container swiper-container-horizontal swiper-container-wp8-horizontal lunbo_t2">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"  v-for="li in list_prize">
+                        <div class="Lis_ys" @click="Lis(li.qihao)">
+                            {{li.qihao}}
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- 倒计时 end -->
+        <!-- 活动详情 -->
+        <div class=" Tong_pad">
+            <div class="Huodxq">
+                <div class="t2">活动详情</div>
+                <p class="t1">
+                    <?=AdminController::actAction();?>
+                </p>
+            </div>
+        </div>
+        <!-- 活动详情 end -->
+    </section>
+    <footer>
+        <div class="T_footer">
+            <ul class="clearfix">
+                <li >
+                    <a href="/?c=single&m=act_jzzl">
+                        <img src="<?php echo $this->templates_path?>/images/feiji.png" alt="">
+                        <span>极致之旅</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/?c=single&m=act_dzp">
+                        <img src="<?php echo $this->templates_path?>/images//dazhuanpan.png" alt="">
+                        <span>大转盘</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/?c=single&m=act_zpq">
+                        <img src="<?php echo $this->templates_path?>/images/zhaopian.png" alt="">
+                        <span>照片墙</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/?c=single&m=act_hjmd">
+                        <img src="<?php echo $this->templates_path?>/images/jiangpin.png" alt="">
+                        <span>获奖名单</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- 弹出 地区选择 -->
+    <div class="Diqxx">
+        <h1>选择区域
+            <span class="fr">
+                <img src="<?php echo $this->templates_path?>/images/guan_03.jpg" alt="">
+            </span>
+        </h1>
+
+
+        <ul class="clearfix Diqu_" >
+            <li v-for="li1 in list_z" >
+                <a :href="'/?c=single&m=act_wqsp&sp_id='+li1.qihao+'&qu='+li1.quyu">{{li1.quyu}}</a>
+            </li>
+        </ul>
+
+
+    </div>
+</div>
+</body>
+<script>
+    var swiper = new Swiper('.lunbo_t2', {
+        slidesPerView: 3,
+        spaceBetween: 30,
+    });
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            list_prize: [],
+            list_z: [],
+        }
+    });
+
+    function get_list()
+    {
+        $.getJSON("/index.php?p=show&c=index&a=daojishi",{},function (result) {
+            var _data = result.msg;
+            if(!result.status){
+//            alert(result.msg);
+            }else {
+                extend(app.list_prize, _data);
+            }
+        });
+    }
+
+
+    window.onload = function(){
+        get_list();
+        //Lis();
+    };
+
+     var Lis=function (name) {
+         $.ajax({
+             url : 'index.php?p=show&c=index&a=spqh',
+             data : {qihao:name},
+             dataType : "json",
+             type : "GET",
+             success:function (msg) {
+                 app.list_z= msg.msg;
+                 $(".Diqxx").show();
+             }
+         });
+     };
+
+
+ $(function () {
+
+     var player = new Aliplayer({
+         id: 'J_prismPlayer',
+         width: '100%',
+         height:'200px',
+         autoplay: false,
+         islive:true,
+         playsinline:true,
+         controlBarVisibility:'always',
+         useH5Prism:true,
+         x5_fullscreen:false, //全屏播放
+         x5_type:'h5', //声明启用同层H5播放器，支持的值：h5
+         x5_orientation:'portraint',
+//         x5_orientation:'landscape ',
+         skinLayout:[
+             {name:"bigPlayButton", align:"blabs", x:"50", y:"60"},
+             {name: "H5Loading", align: "cc"}
+         ],
+         cover: "http://jnc.cdsile.cn/public/webuploader/upload/file_2018022614573抽奖头图03.png",  //播放器封面图
+         source : "<?=empty($jq['zhibodizhi'])?'1321321':$jq['zhibodizhi']?>",
+
+     },function(player) {
+         console.log('播放器创建好了。')
+     });
+
+
+
+
+//     var player = new Aliplayer({
+//         id: 'J_prismPlayer',
+//         width: '100%',
+//         autoplay: false,
+//         //支持播放地址播放,此播放优先级最高
+//         source : "<?=empty($jq['zhibodizhi'])?'1321321':$jq['zhibodizhi']?>",
+//     },function(player) {
+//         console.log('播放器创建好了。')
+//     });
+
+
+
+
+
+     var mySwiper = new Swiper('.lunbo_1', {
+         autoplay: 3000, //可选选项，自动滑动
+         pagination: '.swiper-pagination',
+         loop: true,
+     })
+ });
+
+
+
+</script>
+
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height, user-scalable=no,initial-scale=1, minimum-scale=1, maximum-scale=1 ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的宴会</title>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?ec671709ad25c70148686506a76e5cc9";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/style.css">
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/layout.min.css">
+    <link rel="stylesheet" href="<?php echo $this->templates_path?>/css/scs.min.css">
+    <script src="<?php echo $this->templates_path?>/js/jquery-1.11.0.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/swiper-3.4.2.jquery.min.js"></script>
+    <script src="<?php echo $this->templates_path?>/js/tower.js"></script>
+    <script src="<?php echo $this->templates_path?>/layer/layer.js"></script>
+</head>
+
+<body style="background:#ffd092;">
+    <section style='padding:.15rem .25rem 1.2rem .25rem;'>
+        <div class="Jp_xuz">
+            <input id="xingming" type="text" class="Input_t1" placeholder="请输入收货人姓名">
+            <input id="dianhua" type="text" class="Input_t1" placeholder="请输入收货人电话">
+            <input  type="text" readonly="" class="Input_t1" placeholder="选择省市区"  id="myAddrs" name="addr" data-key="4-84-1298" value="">
+            <input  id="xiangxidizhi" type="text" class="Input_t1" placeholder="请填写详细地址，不少于5个字">
+
+            <p class="mm1">
+                   <span>注意</span> ：信息提交后，不能修改，请谨慎填写有效信息，工作人员会在7个工作日内发出奖品。
+            </p>
+        </div>
+    </section>
+    <aside>
+        <div class="T_aside">
+            <a href="/?c=single&m=act_dzp">
+                <img src="<?php echo $this->templates_path?>/images/wode.png" alt="">
+                <span>抽奖</span>
+            </a>
+            <a href="/?c=single&m=index_kfzx">
+                <img src="<?php echo $this->templates_path?>/images/kefu.png" alt=""><span>客服</span>
+            </a>
+        </div>
+    </aside>
+
+    <footer>
+        <div class="Tijiao_xuz" id="tj">
+            立即提交
+        </div>
+    </footer>
+
+</body>
+<script src="<?php echo $this->templates_path?>/js/jquery.scs.min.js"></script>
+<script src="<?php echo $this->templates_path?>/js/CNAddrArr.min.js"></script>
+<script>
+    $('#tj').click(function () {
+         var reg = /^1[34578]\d{9}$/;
+         var  danhao="<?=$_GET['danhao']?>";
+         var  name=$('#xingming').val();
+         var  tel=$('#dianhua').val();
+         var  dizhi=$('#myAddrs').val();
+         var  xiangxidizhi=$('#xiangxidizhi').val();
+        if (name==''){
+            layer.msg('姓名不能为空'); return false;
+        }
+        if (tel==''){
+            layer.msg('手机号码不能为空'); return false;
+        }
+        if (xiangxidizhi==''){
+            layer.msg('地址不能为空'); return false;
+        }
+        if (!reg.test(tel)) {
+            layer.msg('手机格式错误'); return false;
+        }
+        $.ajax({
+            url : 'index.php?p=show&c=index&a=zpjl',
+            data : {tel:tel,name:name,danhao:danhao,dizhi:dizhi,xiangxidizhi:xiangxidizhi},
+            dataType : "json",
+            type : "POST",
+            beforeSend:function () {
+//                index = layer.load(0, {shade: false});
+            },
+            success:function (msg) {
+                  if (msg=='2'){
+                      alert('信息提交成功');
+                      window.location.href = '/?c=single&m=index_wdjp';
+                  }else if (msg=='3'){
+                      alert('请勿重复提交');
+                  }else{
+                      alert('系统繁忙,请稍后再试');
+                  }
+            }
+        });
+    });
+
+
+
+
+    $(function () {
+        /**
+         * 通过数组id获取地址列表数组
+         *
+         * @param {Number} id
+         * @return {Array} 
+         */
+        function getAddrsArrayById(id) {
+            var results = [];
+            if (addr_arr[id] != undefined)
+                addr_arr[id].forEach(function (subArr) {
+                    results.push({
+                        key: subArr[0],
+                        val: subArr[1]
+                    });
+                });
+            else {
+                return;
+            }
+            return results;
+        }
+        /**
+         * 通过开始的key获取开始时应该选中开始数组中哪个元素
+         *
+         * @param {Array} StartArr
+         * @param {Number|String} key
+         * @return {Number} 
+         */
+        function getStartIndexByKeyFromStartArr(startArr, key) {
+            var result = 0;
+            if (startArr != undefined)
+                startArr.forEach(function (obj, index) {
+                    if (obj.key == key) {
+                        result = index;
+                        return false;
+                    }
+                });
+            return result;
+        }
+
+        //bind the click event for 'input' element
+        $("#myAddrs").click(function () {
+            var PROVINCES = [],
+                startCities = [],
+                startDists = [];
+            //Province data，shall never change.
+            addr_arr[0].forEach(function (prov) {
+                PROVINCES.push({
+                    key: prov[0],
+                    val: prov[1]
+                });
+            });
+            //init other data.
+            var $input = $(this),
+                dataKey = $input.attr("data-key"),
+                provKey = 1, //default province 北京
+                cityKey = 36, //default city 北京
+                distKey = 37, //default district 北京东城区
+                distStartIndex = 0, //default 0
+                cityStartIndex = 0, //default 0
+                provStartIndex = 0; //default 0
+
+            if (dataKey != "" && dataKey != undefined) {
+                var sArr = dataKey.split("-");
+                if (sArr.length == 3) {
+                    provKey = sArr[0];
+                    cityKey = sArr[1];
+                    distKey = sArr[2];
+
+                } else if (sArr.length == 2) { //such as 台湾，香港 and the like.
+                    provKey = sArr[0];
+                    cityKey = sArr[1];
+                }
+                startCities = getAddrsArrayById(provKey);
+                startDists = getAddrsArrayById(cityKey);
+                provStartIndex = getStartIndexByKeyFromStartArr(PROVINCES, provKey);
+                cityStartIndex = getStartIndexByKeyFromStartArr(startCities, cityKey);
+                distStartIndex = getStartIndexByKeyFromStartArr(startDists, distKey);
+            }
+            var navArr = [{ //3 scrollers, and the title and id will be as follows:
+                title: "省",
+                id: "scs_items_prov"
+            }, {
+                title: "市",
+                id: "scs_items_city"
+            }, {
+                title: "区",
+                id: "scs_items_dist"
+            }];
+            SCS.init({
+                navArr: navArr,
+                onOk: function (selectedKey, selectedValue) {
+                    $input.val(selectedValue).attr("data-key", selectedKey);
+                }
+            });
+            var distScroller = new SCS.scrollCascadeSelect({
+                el: "#" + navArr[2].id,
+                dataArr: startDists,
+                startIndex: distStartIndex
+            });
+            var cityScroller = new SCS.scrollCascadeSelect({
+                el: "#" + navArr[1].id,
+                dataArr: startCities,
+                startIndex: cityStartIndex,
+                onChange: function (selectedItem, selectedIndex) {
+                    distScroller.render(getAddrsArrayById(selectedItem.key), 0); //re-render distScroller when cityScroller change
+                }
+            });
+            var provScroller = new SCS.scrollCascadeSelect({
+                el: "#" + navArr[0].id,
+                dataArr: PROVINCES,
+                startIndex: provStartIndex,
+                onChange: function (selectedItem, selectedIndex) { //re-render both cityScroller and distScroller when provScroller change
+                    cityScroller.render(getAddrsArrayById(selectedItem.key), 0);
+                    distScroller.render(getAddrsArrayById(cityScroller.getSelectedItem()
+                        .key), 0);
+                }
+            });
+        });
+    });
+</script>
+
+</html>
